@@ -27,6 +27,8 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     // TODO: Declare instance variables here
     let locationManager = CLLocationManager()
     let weatherDataModel = WeatherDataModel()
+    var type: String = "Fahrenheit"
+    var temp: Double = 0.0
     
     // Pre-linked IBOutlets
     @IBOutlet weak var weatherIcon: UIImageView!
@@ -49,6 +51,19 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
         locationManager.startUpdatingLocation()
     }
     
+    @IBAction func changeType(_ sender: UIButton) {
+        if sender.titleLabel?.text == "Celsius" {
+            sender.setTitle("Fahrenheit", for: .normal)
+            temp = 1.8 * temp + 32
+            type = "Fahrenheit"
+        } else {
+            sender.setTitle("Celsius", for: .normal)
+            temp = (temp - 32) / 1.8
+            type = "Celsius"
+        }
+        weatherDataModel.temperature = Int(temp)
+        updateUIWithWeatherData()
+    }
     
     
     // MARK: - Networking
@@ -75,7 +90,12 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     // Update weather data after getting JSON
     func updateWeatherData(json: JSON) {
         if let tempResult = json["main"]["temp"].double {
-            weatherDataModel.temperature = Int(tempResult - 273.15) // Set temperature
+            temp = tempResult - 273.15 // Default Celsius
+            // Set for celsius and fahrenheit
+            if type == "Fahrenheit" {
+                temp = 1.8 * temp + 32 // Convert C to F
+            }
+            weatherDataModel.temperature = Int(temp)
             weatherDataModel.city = json["name"].stringValue // Set city
             weatherDataModel.condition = json["weather"][0]["id"].intValue // Set weather condition
             weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition) // Icon
