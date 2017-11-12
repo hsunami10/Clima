@@ -67,7 +67,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     
     
     // MARK: - Networking
-    /***************************************************************/
     // HTTP get request the weather
     func getWeatherData(url: String, parameters: [String : String]) {
         // async HTTP get request
@@ -86,7 +85,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     }
     
     // MARK: - JSON Parsing
-    /***************************************************************/
     // Update weather data after getting JSON
     func updateWeatherData(json: JSON) {
         if let tempResult = json["main"]["temp"].double {
@@ -106,7 +104,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     }
     
     // MARK: - UI Updates
-    /***************************************************************/
     // Update UI after getting updating data
     func updateUIWithWeatherData() {
         cityLabel.text = weatherDataModel.city
@@ -115,7 +112,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     }
     
     // MARK: - Location Manager Delegate Methods
-    /***************************************************************/
     // Run when location is updated (startUpdatingLocation)
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // Get last location in array (most precise)
@@ -140,7 +136,6 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
     }
     
     // MARK: - ChangeCityDelegate methods
-    /***************************************************************/
     func userEnteredANewCityName(city: String) {
         let params: [String : String] = ["q": city, "appid": APP_ID]
         getWeatherData(url: WEATHER_URL, parameters: params)
