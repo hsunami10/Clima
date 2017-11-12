@@ -61,7 +61,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
             temp = (temp - 32) / 1.8
             type = "Celsius"
         }
-        weatherDataModel.temperature = Int(temp)
+        weatherDataModel.temperature = Int(round(temp))
         updateUIWithWeatherData()
     }
     
@@ -93,7 +93,7 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate, Change
             if type == "Fahrenheit" {
                 temp = 1.8 * temp + 32 // Convert C to F
             }
-            weatherDataModel.temperature = Int(temp)
+            weatherDataModel.temperature = Int(round(temp))
             weatherDataModel.city = json["name"].stringValue // Set city
             weatherDataModel.condition = json["weather"][0]["id"].intValue // Set weather condition
             weatherDataModel.weatherIconName = weatherDataModel.updateWeatherIcon(condition: weatherDataModel.condition) // Icon
